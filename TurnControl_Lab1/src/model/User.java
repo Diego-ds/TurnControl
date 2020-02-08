@@ -11,6 +11,7 @@ public class User {
 	public static final String TI ="TARJETA DE IDENTIDAD";
 	public static final String CE ="CEDULA DE EXTRANJERIA";
 	public static final String RC ="REGISTRO CIVIL";
+	Turn turn;
 	public User(String typeId,String id,String name,String lastname,String phone,String adress) {
 		this.typeId=typeId;
 		this.id=id;
@@ -18,6 +19,7 @@ public class User {
 		this.lastname=lastname;
 		this.phone=phone;
 		this.adress=adress;
+		turn=null;
 	}
 	public String getTypeId() {
 		return typeId;
@@ -54,5 +56,8 @@ public class User {
 	}
 	public void setAdress(String adress) {
 		this.adress = adress;
+	}
+	public void setTurn(String turn,String status) {
+		this.turn = new Turn(turn,status);
 	}
 }

@@ -26,4 +26,22 @@ public class TurnManagement {
 				usuarios.add(us);
 			}
 	}
+	public User searchUser(String id) throws UserNotFoundException {
+		User obj = null;
+		if(usuarios.isEmpty()) {
+			throw new UserNotFoundException(id);
+		 }else{
+			 for(int i=0;i<usuarios.size();i++) {
+				 if(usuarios.get(i).getId().equalsIgnoreCase(id)) {
+					obj=usuarios.get(i);
+				 }
+			 }
+		}			
+		if(obj==null) {
+			throw new UserNotFoundException(id);
+		}
+		
+		return obj;
+		
+	}
 }

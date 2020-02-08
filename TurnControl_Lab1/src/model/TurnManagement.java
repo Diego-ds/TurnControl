@@ -42,5 +42,11 @@ public class TurnManagement {
 		
 	}
 	//crear metodo si a la persona ya le han asignado turno
+	public String assignTurn(String id,String typeId) throws UserNotFoundException {
+		String msg="";
+		searchUser(id,typeId);
+		return msg;
+	}
+	
 	
 }

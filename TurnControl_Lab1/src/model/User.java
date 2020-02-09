@@ -60,4 +60,11 @@ public class User {
 	public void setTurn(String turn,String status) {
 		this.turn = new Turn(turn,status);
 	}
+	public Turn getTurn() {
+		return this.turn;
+	}
+	@Override
+	public String toString() {
+		return "Name: "+name+"|Lastname: "+lastname+"|Type ID: "+typeId+"|ID: "+id+"\n";
+	}
 }

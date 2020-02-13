@@ -7,10 +7,10 @@ public class User {
 	private String lastname;
 	private String phone;
 	private String adress;
-	public static final String CC ="CEDULA DE CIUDADANIA";
-	public static final String TI ="TARJETA DE IDENTIDAD";
-	public static final String CE ="CEDULA DE EXTRANJERIA";
-	public static final String RC ="REGISTRO CIVIL";
+	public static final String CC ="Citizenship card";
+	public static final String TI ="Identity card";
+	public static final String CE ="Foreign citizenship card";
+	public static final String RC ="Civil registration";
 	Turn turn;
 	public User(String typeId,String id,String name,String lastname,String phone,String adress) {
 		this.typeId=typeId;

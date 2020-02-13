@@ -74,14 +74,14 @@ public class Main {
 		}else {
 			typeId=User.RC;
 		}
-		System.out.println("Please enter the ID\n");
-		String id=teclado.nextLine();
+		System.out.println("Please enter the ID of the user\n");
+		String Id=teclado.nextLine();
 		System.out.println("Please enter the adress of the user");
 		String adress = teclado.nextLine();
 		System.out.println("Please enter the phone number of the user");
 		String phone = teclado.nextLine();
 		try {
-			objTurn.addUser(typeId, id, name, lastname, phone, adress);
+			objTurn.addUser(typeId, Id, name, lastname, phone, adress);
 		} catch (UserAlreadyExistException e) {
 			System.out.println(e.getMessage());
 		}

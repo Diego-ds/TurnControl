@@ -35,6 +35,7 @@ public class Main {
 			case 5:
 				System.out.println("Thank you!");
 				val=false;
+				break;
 			default:
 				System.out.println("Wrong option. Please try again\n");
 				
@@ -91,13 +92,14 @@ public class Main {
 		Scanner teclado= new Scanner(System.in);
 		System.out.println("Please select the type of ID of the user.\n");
 		System.out.println("<1> Citizenship card\n<2> Identity card\n<3> Foreign citizenship card\n<4> civil registration\n ");
-		int op = teclado.nextInt();	
+		String op = teclado.nextLine();	
+		int op1= Integer.parseInt(op);
 		String typeId="";
-		if(op==1) {
+		if(op1==1) {
 			typeId=User.CC;
-		}else if(op==2) {
+		}else if(op1==2) {
 			typeId=User.TI;
-		}else if(op==3) {
+		}else if(op1==3) {
 			typeId=User.CE;
 		}else {
 			typeId=User.RC;
@@ -118,7 +120,8 @@ public class Main {
 		try {
 			System.out.println("The current turn is: "+objTurn.getListTurn()+"\n");
 			System.out.println("The user was: \n<1> Attended\n<2> The user was not here\n");
-			int userAt = teclado.nextInt();
+			String us = teclado.nextLine();
+			int userAt = Integer.parseInt(us);
 			if(userAt==2) {
 				val=false;
 			}

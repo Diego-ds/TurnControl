@@ -32,6 +32,9 @@ public class Main {
 			case 3:
 				obj.attendTurn();
 				break;
+			case 5:
+				System.out.println("Thank you!");
+				val=false;
 			default:
 				System.out.println("Wrong option. Please try again\n");
 				

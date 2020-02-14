@@ -63,25 +63,26 @@ public class Main {
 		String lastname = teclado.nextLine();
 		System.out.println("Please select the type of ID of the user.\n");
 		System.out.println("<1> Citizenship card\n<2> Identity card\n<3> Foreign citizenship card\n<4> civil registration\n ");
-		int op = teclado.nextInt();	
+		String op = teclado.nextLine();	
+		int op1 = Integer.parseInt(op);
 		String typeId="";
-		if(op==1) {
+		if(op1==1) {
 			typeId=User.CC;
-		}else if(op==2) {
+		}else if(op1==2) {
 			typeId=User.TI;
-		}else if(op==3) {
+		}else if(op1==3) {
 			typeId=User.CE;
 		}else {
 			typeId=User.RC;
 		}
 		System.out.println("Please enter the ID of the user\n");
-		String Id=teclado.nextLine();
+		String id=teclado.nextLine();
 		System.out.println("Please enter the adress of the user");
 		String adress = teclado.nextLine();
 		System.out.println("Please enter the phone number of the user");
 		String phone = teclado.nextLine();
 		try {
-			objTurn.addUser(typeId, Id, name, lastname, phone, adress);
+			objTurn.addUser(typeId, id, name, lastname, phone, adress);
 		} catch (UserAlreadyExistException e) {
 			System.out.println(e.getMessage());
 		}

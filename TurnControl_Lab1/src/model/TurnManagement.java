@@ -57,11 +57,11 @@ public class TurnManagement {
 	
 	public String assignTurn(String id,String typeId) throws UserNotFoundException, UserAlreadyHasTurnException {
 		String msg="";
-		if(searchUser(id,typeId).getTurn()!=null) {
+		if(searchUser(id,typeId).getTurn()!=null && searchUser(id,typeId).getTurn().getStatus().equalsIgnoreCase(Turn.NO_ATENDIDO) ) {
 			throw new UserAlreadyHasTurnException(searchUser(id,typeId).getName());
 		}else {
 			searchUser(id,typeId).setTurn(getActualTurn(), Turn.NO_ATENDIDO);
-			msg="User with the ID: "+ typeId+": "+id+" has been assigned with the turn: "+getActualTurn();
+			msg="User with the ID "+ typeId+": "+id+" has been assigned with the turn: "+getActualTurn();
 		}
 		turnList.add(getActualTurn());
 		advanceTurn();

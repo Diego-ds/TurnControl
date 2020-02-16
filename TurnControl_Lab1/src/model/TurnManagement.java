@@ -56,7 +56,7 @@ public class TurnManagement {
 		return obj;
 		
 	}
-	//crear metodo si a la persona ya le han asignado turno
+	
 	
 	public String assignTurn(String id,String typeId) throws UserNotFoundException, UserAlreadyHasTurnException {
 		String msg="";
@@ -96,8 +96,11 @@ public class TurnManagement {
 				leftNum++;
 				rightNum=0;
 			}
-		}else if(posAlp>25) {
+			if(posAlp>25) {
 			posAlp=0;
+			leftNum=0;
+			rightNum=0;
+		}
 		}
 			
 		

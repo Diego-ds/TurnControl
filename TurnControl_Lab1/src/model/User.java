@@ -65,6 +65,13 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "Name: "+name+"|Lastname: "+lastname+"|Type ID: "+typeId+"|ID: "+id+"\n";
+		String msg = "";
+		if(turn!=null) {
+			 msg ="Name: "+name+"|Lastname: "+lastname+"|Type ID: "+typeId+"|ID: "+id+" |"+turn.toString();
+		}else {
+			msg ="Name: "+name+" |Lastname: "+lastname+" |Type ID: "+typeId+" |ID: "+id+" |Has not been assigned with a turn yet"+"\n";
+		}
+		 
+		return msg;
 	}
 }

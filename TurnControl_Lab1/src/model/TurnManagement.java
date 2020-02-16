@@ -20,6 +20,21 @@ public class TurnManagement {
 		this.rightNum=0;
 		
 	}
+	/**
+     * <b>Name:</b> addUser.<br>
+     * This method adds a new user, if the user already exist or there are missing mandatory data then return an exception.<br>
+     * <b>pre:</b> ArrayList usuarios must be initialized.<br>
+     * <b>pos:</b> the user has been created and added or it throw an exception.<br>
+     * @param  typeId the type of the ID. <br>
+     * @param  id the number of the ID. <br>
+     * @param  firstNames the first names of the user. <br>
+     * @param  lastNames the last names of the user. <br>
+     * @param  adress the address of the user (it can be blanked). <br>
+     * @param  telephone the telephone of the user (it can be blanked). <br>
+     * @throws UserAlreadyExistException<br> 
+     * @throws Exception<br> 
+     * @return void<br>
+    */
 	public void addUser(String typeId,String id,String name,String lastname,String phone,String adress) throws UserAlreadyExistException, Exception {
 		if(id.isEmpty() || name.isEmpty() || lastname.isEmpty()) {
 			throw new Exception("Error: ID, name and lastname are mandatory data for registration");
@@ -38,6 +53,16 @@ public class TurnManagement {
 			}
 			
 	}
+	/**
+     * <b>Name:</b> searchUser.<br>
+     * This method search an user by his typeId and ID, if the user don't exist throw an exception.<br>
+     * <b>pre:</b> ArrayList usuarios must be initialized.<br>
+     * <b>pos:</b> the user has been found it and returned or throw an exception.<br>
+     * @param  typeId the type of the ID. <br>
+     * @param  id the number of the ID. <br>
+     * @throws UserNotFoundException<br> 
+     * @return obj User object<br>
+    */
 	public User searchUser(String id,String typeId) throws UserNotFoundException {
 		User obj = null;
 		if(usuarios.isEmpty()) {
@@ -57,7 +82,17 @@ public class TurnManagement {
 		
 	}
 	
-	
+	/**
+     * <b>Name:</b> assignTurn.<br>
+     * This method assign a turn to a user by his typeID and ID, if the user don exist or already has a turn throw an exception.<br>
+     * <b>pre:</b> ArrayList usuarios must be initialized.<br>
+     * <b>pos:</b> the user has been assigned with a turn and returned a message or throw an exception.<br>
+     * @param  typeId the type of the ID. <br>
+     * @param  id the number of the ID. <br>
+     * @throws UserNotFoundException<br> 
+     * @throws UserAlreadyHasTurnException<br>
+     * @return msg String indicating if the turn was correctly assigned<br>
+    */
 	public String assignTurn(String id,String typeId) throws UserNotFoundException, UserAlreadyHasTurnException {
 		String msg="";
 		if(searchUser(id,typeId).getTurn()!=null && searchUser(id,typeId).getTurn().getStatus().equalsIgnoreCase(Turn.NO_ATENDIDO) ) {
@@ -70,12 +105,24 @@ public class TurnManagement {
 		advanceTurn();
 		return msg;
 	}
-	
+	/**
+     * <b>Name:</b> getActualTurn.<br>
+     * This method gets the actual turn.<br>
+     * <b>pre:</b> Array alphabet, int leftNum and int rightNum must be initialized.<br>
+     * <b>pos:</b> the actual turn has been returned.<br>
+     * @return turnct String indicating the turn<br>
+    */
 	public String getActualTurn() {
 		String turnAct= String.format("%c%d%d",alphabet[posAlp],leftNum,rightNum);
 		return turnAct;
 	}
-	
+	/**
+     * <b>Name:</b> getListTurn.<br>
+     * This method gets the actual turn in queue.<br>
+     * <b>pre:</b> ArrayList turnList must be initialized.<br>
+     * <b>pos:</b> the actual turn in queue has been returned.<br>
+     * @return t String indicating the turn in queue<br>
+    */
 	public String getListTurn() throws TurnNotAssignedYetException {
 		String t="";
 		if(turnList.isEmpty()) {
@@ -85,6 +132,13 @@ public class TurnManagement {
 		}
 		return t;
 	}
+	/**
+     * <b>Name:</b> advanceTurn.<br>
+     * This method advance a turn .<br>
+     * <b>pre:</b> Array alphabet, int leftNum and int rightNum must be initialized.<br>
+     * <b>pos:</b> the actual turn has advanced in 1.<br>
+     * @return void<br>
+    */
 	public void advanceTurn() {
 		rightNum++;
 		if(rightNum>9) {
@@ -105,7 +159,15 @@ public class TurnManagement {
 			
 		
 	}
-	
+	/**
+     * <b>Name:</b> attendTurn.<br>
+     * This method attend a user in queue, if the turn has not been assigned yet throw an exception.<br>
+     * <b>pre:</b> ArrayList usuarios must be initialized.<br>
+     * <b>pos:</b> the user has been attended and returned a message or throw an exception.<br>
+     * @param  attend boolean indicate if the user was attended or not was present. <br>
+     * @throws TurnNotAssignedYetException<br> 
+     * @return msg String indicating if the user was attended<br>
+    */
 	public String attendTurn(boolean attend) throws TurnNotAssignedYetException {
 		String msg="";
 		boolean val=true;

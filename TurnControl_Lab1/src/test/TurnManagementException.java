@@ -10,17 +10,17 @@ import CustomExceptions.UserAlreadyExistException;
 import CustomExceptions.UserAlreadyHasTurnException;
 import CustomExceptions.UserNotFoundException;
 
-class TurnManagementException {
+class TurnManagementTest {
 	
 	private TurnManagement control;
 	
-	public void setup1() {
+	public void setup3() {
 		control = new TurnManagement();
 	}
 	@Test
 	public void testAddUser() {
 		
-		setup1();
+		setup3();
 		
 		try {
 			control.addUser(User.TI, "132452", "Pepe", "Perez", "31721151", "calle 32");
@@ -46,7 +46,7 @@ class TurnManagementException {
 	
 	@Test
 	public void testSearchUser() {
-		setup1();
+		setup3();
 		
 		try {
 			control.searchUser( "412313",User.RC);
@@ -77,7 +77,7 @@ class TurnManagementException {
 	}
 	@Test
 	public void testAssignTurn() {
-		setup1();
+		setup3();
 		
 		
 		try {
@@ -104,7 +104,7 @@ class TurnManagementException {
 	}
 	@Test
 	public void testAdvanceTurn() {
-		setup1();
+		setup3();
 		
 		assertEquals("A00",control.getActualTurn() );
 	
@@ -123,7 +123,7 @@ class TurnManagementException {
 	
 	@Test
 	public void testAttendTurn() {
-		setup1();
+		setup3();
 		
 		try {
 			control.addUser(User.CE, "Aw241", "Marselo", "Reyes", "2311", "calle 23");

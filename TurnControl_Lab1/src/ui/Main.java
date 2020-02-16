@@ -32,6 +32,9 @@ public class Main {
 			case 3:
 				obj.attendTurn();
 				break;
+			case 4:
+				obj.showUser();
+				break;
 			case 5:
 				System.out.println("Thank you!");
 				val=false;
@@ -135,6 +138,31 @@ public class Main {
 			System.out.println(e.getMessage());
 		}
 		
+	}
+	public void showUser() {
+		Scanner teclado= new Scanner(System.in);
+		System.out.println("Please select the type of ID of the user.\n");
+		System.out.println("<1> Citizenship card\n<2> Identity card\n<3> Foreign citizenship card\n<4> civil registration\n ");
+		String op = teclado.nextLine();	
+		int op1= Integer.parseInt(op);
+		String typeId="";
+		if(op1==1) {
+			typeId=User.CC;
+		}else if(op1==2) {
+			typeId=User.TI;
+		}else if(op1==3) {
+			typeId=User.CE;
+		}else {
+			typeId=User.RC;
+		}
+		System.out.println("Please enter the ID\n");
+		String id=teclado.nextLine();
+		
+		try {
+			System.out.println(objTurn.showUser(typeId, id));
+		} catch (UserNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 

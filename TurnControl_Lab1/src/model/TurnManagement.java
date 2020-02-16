@@ -195,5 +195,9 @@ public class TurnManagement {
 		return msg;
 	}
 	
-	
+	public String showUser(String typeId,String Id) throws UserNotFoundException {
+		String msg= "";
+		msg =searchUser(Id,typeId).toString();
+		return msg;
+	}
 }

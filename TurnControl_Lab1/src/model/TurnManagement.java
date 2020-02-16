@@ -20,7 +20,10 @@ public class TurnManagement {
 		this.rightNum=0;
 		
 	}
-	public void addUser(String typeId,String id,String name,String lastname,String phone,String adress) throws UserAlreadyExistException {
+	public void addUser(String typeId,String id,String name,String lastname,String phone,String adress) throws UserAlreadyExistException, Exception {
+		if(id.isEmpty() || name.isEmpty() || lastname.isEmpty()) {
+			throw new Exception("Error: ID, name and lastname are mandatory data for registration");
+		}
 		User us = new User(typeId,id,name,lastname,phone,adress);
 			if(usuarios.isEmpty()) {
 				usuarios.add(us);

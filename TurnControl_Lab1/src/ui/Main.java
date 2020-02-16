@@ -85,6 +85,8 @@ public class Main {
 			objTurn.addUser(typeId, id, name, lastname, phone, adress);
 		} catch (UserAlreadyExistException e) {
 			System.out.println(e.getMessage());
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 	
 			

@@ -5,6 +5,7 @@ import CustomExceptions.*;
 public class TurnManagement {
 	ArrayList <User> usuarios;
 	ArrayList <String> turnList;
+	ArrayList <TurnType> turnTypeList;
 	char[] alphabet = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 	private int posAlp;
 	private int leftNum;
@@ -12,12 +13,19 @@ public class TurnManagement {
 	private int indexTurn;
 	
 	public TurnManagement() {
+		turnTypeList= new ArrayList<TurnType>();
 		usuarios=new ArrayList <User>();
 		turnList = new ArrayList <String>();
 		this.indexTurn=0;
 		this.posAlp=0;
 		this.leftNum=0;
 		this.rightNum=0;
+		
+	}
+	
+	public void addTurnType(String name,double time) {
+		TurnType tp = new TurnType(time,name);
+		turnTypeList.add(tp);
 		
 	}
 	/**

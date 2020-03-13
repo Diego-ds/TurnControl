@@ -57,8 +57,8 @@ public class User {
 	public void setAdress(String adress) {
 		this.adress = adress;
 	}
-	public void setTurn(String turn,String status) {
-		this.turn = new Turn(turn,status);
+	public void setTurn(String turn,String status,TurnType tp) {
+		this.turn = new Turn(turn,status,tp);
 	}
 	public Turn getTurn() {
 		return this.turn;

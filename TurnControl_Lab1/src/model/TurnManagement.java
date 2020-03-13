@@ -28,6 +28,15 @@ public class TurnManagement {
 		turnTypeList.add(tp);
 		
 	}
+	public TurnType searchTurnType(String name) {
+		TurnType tp = null;
+		for(int i=0;i<turnTypeList.size();i++) {
+			if(turnTypeList.get(i).getName().equalsIgnoreCase(name)) {
+				tp=turnTypeList.get(i);
+			}
+		}
+		return tp;
+	}
 	/**
      * <b>Name:</b> addUser.<br>
      * This method adds a new user, if the user already exist or there are missing mandatory data then return an exception.<br>
@@ -99,14 +108,18 @@ public class TurnManagement {
      * @param  id the number of the ID. <br>
      * @throws UserNotFoundException<br> 
      * @throws UserAlreadyHasTurnException<br>
+     * @throws NotTurnTypeException <br>
      * @return msg String indicating if the turn was correctly assigned<br>
+	 
     */
-	public String assignTurn(String id,String typeId) throws UserNotFoundException, UserAlreadyHasTurnException {
+	public String assignTurn(String id,String typeId,String nameTurnType) throws UserNotFoundException, UserAlreadyHasTurnException, NotTurnTypeException {
 		String msg="";
 		if(searchUser(id,typeId).getTurn()!=null && searchUser(id,typeId).getTurn().getStatus().equalsIgnoreCase(Turn.NO_ATENDIDO) ) {
 			throw new UserAlreadyHasTurnException(searchUser(id,typeId).getName());
+		}else if(turnTypeList.isEmpty() || searchTurnType(nameTurnType)==null){
+			throw new NotTurnTypeException();
 		}else {
-			searchUser(id,typeId).setTurn(getActualTurn(), Turn.NO_ATENDIDO);
+			searchUser(id,typeId).setTurn(getActualTurn(), Turn.NO_ATENDIDO,searchTurnType(nameTurnType));
 			msg="User with the ID "+ typeId+": "+id+" has been assigned with the turn: "+getActualTurn();
 		}
 		turnList.add(getActualTurn());

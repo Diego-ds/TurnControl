@@ -1,6 +1,7 @@
 package ui;
 import java.util.*;
 
+import CustomExceptions.NotTurnTypeException;
 import CustomExceptions.TurnNotAssignedYetException;
 import CustomExceptions.UserAlreadyExistException;
 import CustomExceptions.UserAlreadyHasTurnException;
@@ -112,11 +113,15 @@ public class Main {
 		}
 		System.out.println("Please enter the ID\n");
 		String id=teclado.nextLine();
+		System.out.println("Please enter the name of the turn type\n");
+		String turnType=teclado.nextLine();
 		try {
-			System.out.println(objTurn.assignTurn(id, typeId));
+			System.out.println(objTurn.assignTurn(id, typeId,turnType));
 		}catch(UserNotFoundException e) {
 			System.out.println(e.getMessage());
 		}catch(UserAlreadyHasTurnException e) {
+			System.out.println(e.getMessage());
+		} catch (NotTurnTypeException e) {
 			System.out.println(e.getMessage());
 		}
 	}

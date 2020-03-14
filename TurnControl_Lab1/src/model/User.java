@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class User {
 	private String typeId;
 	private String id;
@@ -12,6 +14,7 @@ public class User {
 	public static final String CE ="Foreign citizenship card";
 	public static final String RC ="Civil registration";
 	Turn turn;
+	ArrayList <Turn>turns;
 	public User(String typeId,String id,String name,String lastname,String phone,String adress) {
 		this.typeId=typeId;
 		this.id=id;
@@ -20,6 +23,7 @@ public class User {
 		this.phone=phone;
 		this.adress=adress;
 		turn=null;
+		turns = new ArrayList<Turn>();
 	}
 	public String getTypeId() {
 		return typeId;
@@ -59,6 +63,8 @@ public class User {
 	}
 	public void setTurn(String turn,String status,TurnType tp) {
 		this.turn = new Turn(turn,status,tp);
+		Turn turn1 = new Turn(turn,status,tp);
+		turns.add(turn1);
 	}
 	public Turn getTurn() {
 		return this.turn;

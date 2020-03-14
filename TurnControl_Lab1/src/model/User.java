@@ -63,7 +63,7 @@ public class User {
 	}
 	public void setTurn(String turn,String status,TurnType tp) {
 		this.turn = new Turn(turn,status,tp);
-		Turn turn1 = new Turn(turn,status,tp);
+		Turn turn1 = this.turn;
 		turns.add(turn1);
 	}
 	public Turn getTurn() {

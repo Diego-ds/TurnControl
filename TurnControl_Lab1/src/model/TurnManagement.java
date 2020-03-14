@@ -6,6 +6,8 @@ public class TurnManagement {
 	ArrayList <User> usuarios;
 	ArrayList <String> turnList;
 	ArrayList <TurnType> turnTypeList;
+	Date sysDate;
+	Time sysTime;
 	char[] alphabet = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 	private int posAlp;
 	private int leftNum;
@@ -13,6 +15,8 @@ public class TurnManagement {
 	private int indexTurn;
 	
 	public TurnManagement() {
+		sysDate=new Date();
+		sysTime=new Time();
 		turnTypeList= new ArrayList<TurnType>();
 		usuarios=new ArrayList <User>();
 		turnList = new ArrayList <String>();
@@ -21,6 +25,30 @@ public class TurnManagement {
 		this.leftNum=0;
 		this.rightNum=0;
 		
+	}
+	
+	public String getDateTime() {
+		return sysDate.getDate()+sysTime.getTime();
+	}
+	
+	public void setNewDate(int y,int m,int d,int h,int mm,int s) throws TimeImpossibleToChangeException {
+		Calendar myC = Calendar.getInstance();
+		if(m>12 || m<0 || d<1 || d>31 || h<0 || h>24 || mm<0 || m>60 || s<0 || s>60) {
+			throw new TimeImpossibleToChangeException();
+		}else if(y<myC.get(Calendar.YEAR)) {
+			throw new TimeImpossibleToChangeException();
+		}else if(y==myC.get(Calendar.YEAR) && m<myC.get(Calendar.MONTH)) {
+			throw new TimeImpossibleToChangeException();
+		}else if(y==myC.get(Calendar.YEAR) && m==myC.get(Calendar.MONTH) && d<myC.get(Calendar.DAY_OF_MONTH)) {
+			throw new TimeImpossibleToChangeException();
+		}else if(y==myC.get(Calendar.YEAR) && m==myC.get(Calendar.MONTH) && d==myC.get(Calendar.DAY_OF_MONTH) && h<myC.get(Calendar.HOUR)) {
+			throw new TimeImpossibleToChangeException();
+		}else if(y==myC.get(Calendar.YEAR) && m==myC.get(Calendar.MONTH) && d==myC.get(Calendar.DAY_OF_MONTH) && h==myC.get(Calendar.HOUR) && mm<myC.get(Calendar.MINUTE)) {
+			throw new TimeImpossibleToChangeException();
+		}else {
+			sysDate.setCustomDate(y, m, d);
+			sysTime.setCustomTime(h, mm, s);
+		}
 	}
 	
 	public void addTurnType(String name,double time) {
@@ -146,7 +174,7 @@ public class TurnManagement {
     */
 	public String getListTurn() throws TurnNotAssignedYetException {
 		String t="";
-		if(turnList.isEmpty()) {
+		if(indexTurn >= turnList.size()) {
 			throw new TurnNotAssignedYetException(getActualTurn());
 		}else {
 			t= turnList.get(indexTurn);
@@ -202,9 +230,11 @@ public class TurnManagement {
 					if(attend) {
 						usuarios.get(i).getTurn().setStatus(Turn.ATENDIDO);
 						msg="The user "+usuarios.get(i).getName()+" "+usuarios.get(i).getLastname()+" was attended in the turn "+turnList.get(indexTurn)+"\n";
+						indexTurn++;
 					}else {
 						usuarios.get(i).getTurn().setStatus(Turn.NO_ESTABA);
 						msg="The user "+usuarios.get(i).getName()+" "+usuarios.get(i).getLastname()+" was not here to be attended \n";
+						indexTurn++;
 					}
 				}
 			}
@@ -212,7 +242,7 @@ public class TurnManagement {
 				throw new TurnNotAssignedYetException(actualT);
 			}
 		}
-		indexTurn++;
+		
 		return msg;
 	}
 	

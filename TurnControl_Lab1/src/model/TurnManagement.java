@@ -442,4 +442,6 @@ public class TurnManagement implements Serializable{
 		msg =searchUser(Id,typeId).toString();
 		return msg;
 	}
+	
+	
 }

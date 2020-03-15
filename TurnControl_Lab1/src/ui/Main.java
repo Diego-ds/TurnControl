@@ -1,7 +1,12 @@
 package ui;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
@@ -88,6 +93,26 @@ public class Main implements Serializable {
 				obj.getDateTime();
 				break;
 			case 10:
+				try {
+					obj.saveData();
+				} catch (FileNotFoundException e) {
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 11:
+				try {
+					obj.chargeData();
+				} catch (FileNotFoundException e) {
+					System.out.println(e.getMessage());
+				} catch (ClassNotFoundException e) {
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 12:
 				System.out.println("Thank you!");
 				val=false;
 				break;
@@ -113,7 +138,9 @@ public class Main implements Serializable {
 		System.out.println("7. Change the date and time of the system.\n");
 		System.out.println("8. Update the current date and time.\n");
 		System.out.println("9. Show the date and time of the system.\n");
-		System.out.println("10. Exit.\n");
+		System.out.println("10. Save the current data.\n");
+		System.out.println("11. Charge data.\n");
+		System.out.println("12. Exit.\n");
 		
 	}
 	public void addUser() {
@@ -265,6 +292,17 @@ public class Main implements Serializable {
 		} catch (UserNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	public void chargeData() throws FileNotFoundException, IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("tl.txt"));
+		objTurn=(TurnManagement) ois.readObject();
+		ois.close();
+	}
+	public void saveData() throws FileNotFoundException, IOException {
+		ObjectOutputStream oop = new ObjectOutputStream(new FileOutputStream("tl.txt"));
+		oop.writeObject(objTurn);
+		oop.close();
 	}
 	
 

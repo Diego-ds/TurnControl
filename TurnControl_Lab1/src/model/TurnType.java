@@ -1,6 +1,6 @@
 package model;
 
-public class TurnType {
+public class TurnType implements Comparable <TurnType> {
 	private double time;
 	private String name;
 	public TurnType(double time, String name) {
@@ -18,6 +18,11 @@ public class TurnType {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	@Override
+	public int compareTo(TurnType o) {
+		
+		return name.compareToIgnoreCase(o.getName());
 	}
 	
 	

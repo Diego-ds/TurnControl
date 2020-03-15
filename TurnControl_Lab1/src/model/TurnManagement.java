@@ -75,7 +75,7 @@ public class TurnManagement {
 			throw new TurnNotAssignedYetException("A00");
 		}else {
 			Calendar actual = Calendar.getInstance();
-			GregorianCalendar myC = new GregorianCalendar(sysDate.getYear(),sysDate.getMonth()+1,sysDate.getDay(),sysTime.getHour(),sysTime.getMinute(),sysTime.getSeconds());
+			GregorianCalendar myC = new GregorianCalendar(sysDate.getYear(),sysDate.getMonth(),sysDate.getDay(),sysTime.getHour(),sysTime.getMinute(),sysTime.getSeconds());
 			while(!val) {
 				if(myC.before(actual)) {
 					boolean attend=true;
@@ -97,12 +97,12 @@ public class TurnManagement {
 					msg+=attendTurn(attend);
 					myC.add(Calendar.SECOND, 15);
 					
-					if(attendTurn(attend).equalsIgnoreCase("no existe")) {
+					/*if(attendTurn(attend).equalsIgnoreCase("no existe")) {
 						val=true;
 						sysDate.setChange(false);
 						sysTime.setChange(false);
 						updateDateTime();
-					}
+					}*/
 					
 				}else {
 					val=true;
@@ -151,9 +151,19 @@ public class TurnManagement {
 	}
 	public TurnType searchTurnType(String name) {
 		TurnType tp = null;
-		for(int i=0;i<turnTypeList.size();i++) {
-			if(turnTypeList.get(i).getName().equalsIgnoreCase(name)) {
-				tp=turnTypeList.get(i);
+		boolean val=false;
+		Collections.sort(turnTypeList);
+		int min=0;
+		int max=turnTypeList.size()-1;
+		while(min<=max && !val) {
+			int mid = (min+max)/2;
+			if(turnTypeList.get(mid).getName().equalsIgnoreCase(name)) {
+				val=true;
+				tp=turnTypeList.get(mid);
+			}else if(turnTypeList.get(mid).getName().compareToIgnoreCase(name)<0) {
+				min=mid+1;
+			}else if(turnTypeList.get(mid).getName().compareToIgnoreCase(name)>0) {
+				max=mid-1;
 			}
 		}
 		return tp;
@@ -194,6 +204,7 @@ public class TurnManagement {
 			if(usuarios.isEmpty()) {
 				usuarios.add(us);
 			}else {
+				Collections.sort(usuarios, new UserNameComparator());
 				for(int i =0;i<usuarios.size();i++) {
 					 if(usuarios.get(i).getId().equalsIgnoreCase(id) && usuarios.get(i).getTypeId().equalsIgnoreCase(typeId)) {
 						throw new UserAlreadyExistException(name,id);
@@ -281,7 +292,7 @@ public class TurnManagement {
     */
 	public String getListTurn() throws TurnNotAssignedYetException {
 		String t="";
-		if(turnList.isEmpty()) {
+		if(indexTurn>=turnList.size()) {
 			throw new TurnNotAssignedYetException(getActualTurn());
 		}else {
 			t= turnList.get(indexTurn);

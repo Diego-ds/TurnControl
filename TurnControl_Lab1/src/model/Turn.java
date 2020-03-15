@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Collections;
+
 public class Turn {
 	private String turn;
 	private String status;
@@ -36,6 +38,9 @@ public class Turn {
 	public String toString() {
 		return "Turn: "+turn+"|"+" Status:"+status+"\n";
 	}
+	
+
+	
 	
 	
 }

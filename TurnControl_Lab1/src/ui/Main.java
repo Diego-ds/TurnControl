@@ -113,6 +113,15 @@ public class Main implements Serializable {
 				}
 				break;
 			case 12:
+				try {
+					obj.UserReport();
+				} catch (UserNotFoundException e) {
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 13:
 				System.out.println("Thank you!");
 				val=false;
 				break;
@@ -140,7 +149,8 @@ public class Main implements Serializable {
 		System.out.println("9. Show the date and time of the system.\n");
 		System.out.println("10. Save the current data.\n");
 		System.out.println("11. Charge data.\n");
-		System.out.println("12. Exit.\n");
+		System.out.println("12. Generate a turn report of an user .\n");
+		System.out.println("13. Exit.\n");
 		
 	}
 	public void addUser() {
@@ -303,6 +313,27 @@ public class Main implements Serializable {
 		ObjectOutputStream oop = new ObjectOutputStream(new FileOutputStream("tl.txt"));
 		oop.writeObject(objTurn);
 		oop.close();
+	}
+	
+	public void UserReport() throws UserNotFoundException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Please select the type of ID of the user.\n");
+		System.out.println("<1> Citizenship card\n<2> Identity card\n<3> Foreign citizenship card\n<4> civil registration\n ");
+		String op = br.readLine();
+		int op1= Integer.parseInt(op);
+		String typeId="";
+		if(op1==1) {
+			typeId=User.CC;
+		}else if(op1==2) {
+			typeId=User.TI;
+		}else if(op1==3) {
+			typeId=User.CE;
+		}else {
+			typeId=User.RC;
+		}
+		System.out.println("Please enter the ID\n");
+		String id=br.readLine();
+		System.out.println(objTurn.UserReport(id, typeId));
 	}
 	
 

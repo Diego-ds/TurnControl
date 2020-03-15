@@ -436,6 +436,20 @@ public class TurnManagement implements Serializable{
 		
 		return msg;
 	}
+	/**
+     * <b>Name:</b> userReport.<br>
+     * This method generate a report of all the turns that one user ever had.<br>
+     * <b>pos:</b> The report has been generated.<br>
+     * @param  id String The user ID. <br>
+     * @param  typeID String The user type ID. <br>
+     * @throws UserNotFoundException<br> 
+     * @return msg String Text chain with the user turns<br>
+    */
+	public String UserReport(String id,String typeID) throws UserNotFoundException {
+		String msg ="";
+		msg = searchUser(id,typeID).getListOfTurn();
+		return msg;
+	}
 	
 	public String showUser(String typeId,String Id) throws UserNotFoundException {
 		String msg= "";

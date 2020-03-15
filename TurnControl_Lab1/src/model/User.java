@@ -82,4 +82,16 @@ public class User implements Serializable {
 		 
 		return msg;
 	}
+	
+	public String getListOfTurn() {
+		String msg ="";
+		if(turns.isEmpty()) {
+			msg="The User hasn't been assigned with any turn yet";
+		}else {
+			for(int i=0;i<turns.size();i++) {
+				msg+=turns.get(i).toString();
+			}
+		}
+		return msg;
+	}
 }

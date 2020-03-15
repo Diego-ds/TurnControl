@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import CustomExceptions.TimeImpossibleToChangeException;
 
-public class Date {
+public class Date implements Serializable{
+	private static final long serialVersionUID = 1L;
 	private int year;
 	private int month;
 	private int day;

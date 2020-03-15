@@ -2,6 +2,7 @@ package ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.*;
 
 import CustomExceptions.NotTurnTypeException;
@@ -13,7 +14,8 @@ import CustomExceptions.UserNotFoundException;
 import model.TurnManagement;
 import model.User;
 
-public class Main {
+public class Main implements Serializable {
+	private static final long serialVersionUID = 1L;
 	TurnManagement objTurn;
 	public Main() {
 		objTurn= new TurnManagement();

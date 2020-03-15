@@ -1,8 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class UserNameComparator implements Comparator <User> {
+public class UserNameComparator implements Comparator <User>, Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public int compare(User arg0, User arg1) {

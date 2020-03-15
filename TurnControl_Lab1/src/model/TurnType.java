@@ -1,6 +1,9 @@
 package model;
 
-public class TurnType implements Comparable <TurnType> {
+import java.io.Serializable;
+
+public class TurnType implements Comparable <TurnType>, Serializable {
+	private static final long serialVersionUID = 1L;
 	private double time;
 	private String name;
 	public TurnType(double time, String name) {

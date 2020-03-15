@@ -1,8 +1,9 @@
 package model;
 
-import java.util.Collections;
+import java.io.Serializable;
 
-public class Turn {
+public class Turn implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String turn;
 	private String status;
 	public final static String ATENDIDO ="Attended";

@@ -3,10 +3,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 import CustomExceptions.*;
 
-public class TurnManagement {
+public class TurnManagement implements Serializable{
+	private static final long serialVersionUID = 1L;
 	ArrayList <User> usuarios;
 	ArrayList <String> turnList;
 	ArrayList <TurnType> turnTypeList;
@@ -30,7 +32,15 @@ public class TurnManagement {
 		this.rightNum=0;
 		
 	}
-	
+	/**
+     * <b>Name:</b> generateUser.<br>
+     * This method adds a new random user.<br>
+     * <b>pre:</b> ArrayList usuarios must be initialized.<br>
+     * <b>pos:</b> the user has been created and added .<br>
+     * @throws UserAlreadyExistException<br> 
+     * @throws Exception<br> 
+     * @return void<br>
+    */
 	public void generateUser() throws UserAlreadyExistException, Exception {
 		String id;
 		String typeId;
@@ -60,69 +70,107 @@ public class TurnManagement {
 		adress = "Street "+random.nextInt(100)+" # "+random.nextInt(50)+"-"+random.nextInt(100);
 		addUser(typeId, id, name,lastname,phone,adress);
 	}
-	
+	/**
+     * <b>Name:</b> numberNewUser.<br>
+     * This method adds a detemined number of random users.<br>
+     * <b>pre:</b> ArrayList usuarios must be initialized.<br>
+     * <b>pos:</b> the users has been created and added .<br>
+     * @throws UserAlreadyExistException<br> 
+     * @throws Exception<br> 
+     * @return void<br>
+    */
 	public void numberNewUsers(int n) throws UserAlreadyExistException, Exception {
 		for(int i=0;i<n;i++) {
 			generateUser();
 		}
 	}
-	
+	/**
+     * <b>Name:</b> attendTurnsUntilNow.<br>
+     * This method attend all the turns until the actual date and time.<br>
+     * <b>pre:</b> There must be at least 1 turn created.<br>
+     * <b>pos:</b> The turns has been attended checking the duration of each one until the actual date and time of the system .<br>
+     * @throws TurnNotAssignedYetException<br> 
+     * @throws TimeImpossibleToChangeException<br> 
+     * @return msg String indicating the turns that has been attended<br>
+    */
 	public String attendTurnsUntilNow() throws TurnNotAssignedYetException, TimeImpossibleToChangeException {
 		boolean val=false;
 		Random r = new Random();
-		String msg="There aren't turns for attend";
+		String msg="";
 		if(turnList.isEmpty()) {
 			throw new TurnNotAssignedYetException("A00");
 		}else {
 			Calendar actual = Calendar.getInstance();
 			GregorianCalendar myC = new GregorianCalendar(sysDate.getYear(),sysDate.getMonth(),sysDate.getDay(),sysTime.getHour(),sysTime.getMinute(),sysTime.getSeconds());
 			while(!val) {
-				if(myC.before(actual)) {
+				if(actual.after(myC)) {
 					boolean attend=true;
 					int e = r.nextInt(2);
 					if(e==1) {
 						attend=false;
 					}
-					myC.add(Calendar.MINUTE, (int) searchActualTurn().getType().getTime());
-					double parteDecimal = searchActualTurn().getType().getTime() % 1;
-					if(parteDecimal<=0.25) {
-						myC.add(Calendar.SECOND, 15);
-					}else if(parteDecimal>0.25 && parteDecimal<=0.50) {
-						myC.add(Calendar.SECOND, 30);
-					}else if(parteDecimal>0.50 && parteDecimal<=0.75) {
-						myC.add(Calendar.SECOND, 45);
+					if(searchActualTurn()!=null) {
+						myC.add(Calendar.MINUTE, (int) searchActualTurn().getType().getTime());
+						double parteDecimal = searchActualTurn().getType().getTime() % 1;
+						if(parteDecimal<=0.25) {
+							myC.add(Calendar.SECOND, 15);
+						}else if(parteDecimal>0.25 && parteDecimal<=0.50) {
+							myC.add(Calendar.SECOND, 30);
+						}else if(parteDecimal>0.50 && parteDecimal<=0.75) {
+							myC.add(Calendar.SECOND, 45);
+						}else {
+							myC.add(Calendar.SECOND, 55);
+						}
+						if(actual.after(myC)) {
+							msg+=attendTurn(attend);
+							myC.add(Calendar.SECOND, 15);
+						}
 					}else {
-						myC.add(Calendar.SECOND, 55);
-					}
-					msg+=attendTurn(attend);
-					myC.add(Calendar.SECOND, 15);
-					
-					/*if(attendTurn(attend).equalsIgnoreCase("no existe")) {
 						val=true;
-						sysDate.setChange(false);
-						sysTime.setChange(false);
-						updateDateTime();
-					}*/
-					
+					}	
 				}else {
 					val=true;
 				}
+				updateDateTime();
 			}
 		}
-		
 		return msg;
-		
-		
 	}
-	
+	/**
+     * <b>Name:</b> updateDateTime.<br>
+     * This method update the date and time of the system to the actual one.<br>
+     * <b>pos:</b> the date and time has been updated .<br>
+     * @throws TimeImpossibleToChangeException<br> 
+     * @return void<br>
+    */
 	public void updateDateTime() throws TimeImpossibleToChangeException {
 		sysTime.updateTime();
 		sysDate.updateDate();
 	}
-	
+	/**
+     * <b>Name:</b> getDateTime.<br>
+     * This method get the actual date and time in text chain.<br>
+     * <b>pos:</b> The date and time has been turned into a String .<br>
+     * @throws TimeImpossibleToChangeException<br> 
+     * @return String with the actual date and time<br>
+    */
 	public String getDateTime() {
 		return sysDate.getDate()+sysTime.getTime();
 	}
+	/**
+     * <b>Name:</b> setNewDate.<br>
+     * This method adds a new user, if the user already exist or there are missing mandatory data then return an exception.<br>
+     * <b>pre:</b> sysDate and sysTime must be initialized.<br>
+     * <b>pos:</b> The new date and time has been set up.<br>
+     * @param  y The new year. <br>
+     * @param  m The new month. <br>
+     * @param  d The new day of the month. <br>
+     * @param  h The new hour. <br>
+     * @param  mm The new minute  <br>
+     * @param  s The new second <br>
+     * @throws TimeImpossibleToChangeException<br> 
+     * @return void<br>
+    */
 	
 	public void setNewDate(int y,int m,int d,int h,int mm,int s) throws TimeImpossibleToChangeException {
 		Calendar myC = Calendar.getInstance();
@@ -139,16 +187,33 @@ public class TurnManagement {
 		}else if(y==myC.get(Calendar.YEAR) && m==myC.get(Calendar.MONTH) && d==myC.get(Calendar.DAY_OF_MONTH) && h==myC.get(Calendar.HOUR) && mm<myC.get(Calendar.MINUTE)) {
 			throw new TimeImpossibleToChangeException();
 		}else {
-			sysDate.setCustomDate(y, m, d);
+			sysDate.setCustomDate(y, m-1, d);
 			sysTime.setCustomTime(h, mm, s);
 		}
 	}
 	
+	/**
+     * <b>Name:</b> addTurnType.<br>
+     * This method add a new turn type.<br>
+     * <b>pre:</b> The turnTypeList must be initialized.<br>
+     * @param  name The name of the turn type. <br>
+     * @param  time The duration that takes attend this turn. <br>
+     * <b>pos:</b> The new turn type has been added .<br>
+     * @return void<br>
+    */
 	public void addTurnType(String name,double time) {
 		TurnType tp = new TurnType(time,name);
 		turnTypeList.add(tp);
 		
 	}
+	/**
+     * <b>Name:</b> searchTurnType.<br>
+     * This method search a turn type by its name.<br>
+     * <b>pre:</b> The turnTypeList must be initialized.<br>
+     * <b>pos:</b> The turn type has been searched and returned .<br>
+     * @param  name The name of the turn type that we are looking for. <br>
+     * @return tp TurnType An object TurnType <br>
+    */
 	public TurnType searchTurnType(String name) {
 		TurnType tp = null;
 		boolean val=false;
@@ -168,6 +233,12 @@ public class TurnManagement {
 		}
 		return tp;
 	}
+	/**
+     * <b>Name:</b> searchActualTurn.<br>
+     * This method search the actual turn .<br>
+     * <b>pos:</b> The actual turn has been searched .<br>
+     * @return tp Turn An object Turn <br>
+    */
 	public Turn searchActualTurn() throws TurnNotAssignedYetException {
 		Turn tp=null;
 		boolean val =false;
@@ -293,7 +364,7 @@ public class TurnManagement {
 	public String getListTurn() throws TurnNotAssignedYetException {
 		String t="";
 		if(indexTurn>=turnList.size()) {
-			throw new TurnNotAssignedYetException(getActualTurn());
+			t= "Ran out of shifts";
 		}else {
 			t= turnList.get(indexTurn);
 		}
@@ -336,27 +407,31 @@ public class TurnManagement {
      * @return msg String indicating if the user was attended<br>
     */
 	public String attendTurn(boolean attend) throws TurnNotAssignedYetException {
-		String msg="No existe";
-		boolean val=true;
+		String msg="";
+		boolean val=false;
 		String actualT= getListTurn();
 		if(usuarios.isEmpty()) {
 			throw new TurnNotAssignedYetException(actualT);
 		}else {
-			for(int i=0;i<usuarios.size();i++) {
-				if(usuarios.get(i).getTurn().getTurn().equalsIgnoreCase(turnList.get(indexTurn))) {
-					val=false;
-					if(attend) {
-						usuarios.get(i).getTurn().setStatus(Turn.ATENDIDO);
-						msg="The user "+usuarios.get(i).getName()+" "+usuarios.get(i).getLastname()+" was attended in the turn "+turnList.get(indexTurn)+"\n";
-						indexTurn++;
-					}else {
-						usuarios.get(i).getTurn().setStatus(Turn.NO_ESTABA);
-						msg="The user "+usuarios.get(i).getName()+" "+usuarios.get(i).getLastname()+" was not here to be attended \n";
-						indexTurn++;
+			for(int i=0;i<usuarios.size() ;i++) {
+				if(usuarios.get(i).getTurn()!= null ) {
+					if(usuarios.get(i).getTurn().getTurn().equalsIgnoreCase(actualT)) {
+						if(attend) {
+							usuarios.get(i).getTurn().setStatus(Turn.ATENDIDO);
+							msg="The user "+usuarios.get(i).getName()+" "+usuarios.get(i).getLastname()+" was attended in the turn "+turnList.get(indexTurn)+"\n";
+							indexTurn++;
+							
+						}else {
+							usuarios.get(i).getTurn().setStatus(Turn.NO_ESTABA);
+							msg="The user "+usuarios.get(i).getName()+" "+usuarios.get(i).getLastname()+" was not here to be attended \n";
+							indexTurn++;
+							
+						}
 					}
+						
 				}
+					
 			}
-		
 		}
 		
 		return msg;

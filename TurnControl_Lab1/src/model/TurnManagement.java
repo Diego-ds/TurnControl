@@ -283,6 +283,7 @@ public class TurnManagement implements Serializable{
 				}
 				
 				usuarios.add(us);
+				Collections.sort(usuarios,new UserNameComparator());
 			}
 			
 	}

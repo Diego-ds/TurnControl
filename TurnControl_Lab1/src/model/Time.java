@@ -2,6 +2,8 @@ package model;
 
 import java.util.Calendar;
 
+import CustomExceptions.TimeImpossibleToChangeException;
+
 public class Time {
 	private int hour;
 	private int minute;
@@ -12,16 +14,15 @@ public class Time {
 	private boolean change;
 	public Time() {
 		Calendar myC = Calendar.getInstance();
-		this.hour = myC.get(myC.get(Calendar.HOUR));
-		this.minute = myC.get(myC.get(Calendar.MINUTE));
-		this.seconds = myC.get(myC.get(Calendar.SECOND));
+		this.hour = myC.get(Calendar.HOUR);
+		this.minute = myC.get(Calendar.MINUTE);
+		this.seconds = myC.get(Calendar.SECOND);
 		this.hourDiff = 0;
 		this.minDiff = 0;
 		this.secDiff = 0;
 		change=false;
 	}
 	public String getTime() {
-		updateTime();
 		String msg="";
 		if(!change) {
 			msg=hour+":"+minute+":"+seconds;
@@ -33,19 +34,59 @@ public class Time {
 	
 	
 	public void setCustomTime(int h,int m,int s) {
-		updateTime();
 		hourDiff=hour-h;
 		minDiff=minute-m;
 		secDiff=seconds-s;
 		change=true;
 	}
 	
-	public void updateTime() {
-		Calendar myC = Calendar.getInstance();
-		this.hour = myC.get(myC.get(Calendar.HOUR));
-		this.minute = myC.get(myC.get(Calendar.MINUTE));
-		this.seconds = myC.get(myC.get(Calendar.SECOND));
+	public void updateTime() throws TimeImpossibleToChangeException {
+		if(!change) {
+			Calendar myC = Calendar.getInstance();
+			this.hour = myC.get(Calendar.HOUR);
+			this.minute = myC.get(Calendar.MINUTE);
+			this.seconds = myC.get(Calendar.SECOND);
+		}else {
+			throw new TimeImpossibleToChangeException();
+		}
+		
 	}
+	
+	public boolean getChange() {
+		return change;
+	}
+	public void setChange(boolean v) {
+		change=v;
+	}
+	public int getHour() {
+		int h;
+		if(change) {
+			h= hour+hourDiff;
+		}else {
+			h=hour;
+		}
+		return h;
+	}
+	public int getMinute() {
+		int m;
+		if(change) {
+			m=minute+minDiff;
+		}else {
+			m=minute;
+		}
+		return m;
+	}
+	public int getSeconds() {
+		int s;
+		if(change) {
+			s=seconds+secDiff;
+		}else {
+			s=seconds;
+		}
+		return s;
+	}
+	
+	
 	
 	
 	

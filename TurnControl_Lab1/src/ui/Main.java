@@ -1,7 +1,11 @@
 package ui;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 import CustomExceptions.NotTurnTypeException;
+import CustomExceptions.TimeImpossibleToChangeException;
 import CustomExceptions.TurnNotAssignedYetException;
 import CustomExceptions.UserAlreadyExistException;
 import CustomExceptions.UserAlreadyHasTurnException;
@@ -28,15 +32,60 @@ public class Main {
 				obj.addUser();
 				break;
 			case 2:
-				obj.assignTurn();
+				try {
+					obj.addTurnType();
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case 3:
-				obj.attendTurn();
+				obj.assignTurn();
 				break;
 			case 4:
-				obj.showUser();
+				try {
+					try {
+						obj.attendTurnUntilNow();
+					} catch (TimeImpossibleToChangeException e) {
+						System.out.println(e.getMessage());
+					}
+				} catch (TurnNotAssignedYetException e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case 5:
+				obj.showUser();
+				break;
+			case 6:
+				try {
+					obj.generateUser();
+				} catch (UserAlreadyExistException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 7:
+				try {
+					obj.setNewDate();
+				} catch (NumberFormatException e) {
+					System.out.println(e.getMessage());
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+				} catch (TimeImpossibleToChangeException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 8:
+				try {
+					obj.updateTime();
+				} catch (TimeImpossibleToChangeException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 9:
+				obj.getDateTime();
+				break;
+			case 10:
 				System.out.println("Thank you!");
 				val=false;
 				break;
@@ -51,12 +100,18 @@ public class Main {
 
 	}
 	public void showMenu() {
+		System.out.println("The current date is: "+objTurn.getDateTime()+"\n");
 		System.out.println("Please select an option.\n");
 		System.out.println("1. Add a new user.\n");
-		System.out.println("2. Assign a turn to an user.\n");
-		System.out.println("3. Attend a turn.\n");
-		System.out.println("4. Search and show an user.\n");
-		System.out.println("5. Exit.\n");
+		System.out.println("2. Add a turn type.\n");
+		System.out.println("3. Assign a turn to an user.\n");
+		System.out.println("4. Attend turns until now.\n");
+		System.out.println("5. Search and show an user.\n");
+		System.out.println("6. Generate new users.\n");
+		System.out.println("7. Change the date and time of the system.\n");
+		System.out.println("8. Update the current date and time.\n");
+		System.out.println("9. Show the date and time of the system.\n");
+		System.out.println("10. Exit.\n");
 		
 	}
 	public void addUser() {
@@ -124,6 +179,46 @@ public class Main {
 		} catch (NotTurnTypeException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	public void generateUser() throws UserAlreadyExistException, Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("How many user do you want to create");
+		int users = Integer.parseInt(br.readLine());
+		objTurn.numberNewUsers(users);;
+	}
+	public void attendTurnUntilNow() throws TurnNotAssignedYetException, TimeImpossibleToChangeException {
+		System.out.println(objTurn.attendTurnsUntilNow());
+	}
+	public void getDateTime() {
+		System.out.println(objTurn.getDateTime());
+	}
+	public void updateTime() throws TimeImpossibleToChangeException {
+		objTurn.updateDateTime();
+	}
+	public void setNewDate() throws NumberFormatException, IOException, TimeImpossibleToChangeException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Please enter the year");
+		int y=Integer.parseInt(br.readLine());
+		System.out.println("Please enter the number of the month (1-12) ");
+		int m=Integer.parseInt(br.readLine());
+		System.out.println("Please enter the day of the month");
+		int d=Integer.parseInt(br.readLine());
+		System.out.println("Please enter the hour");
+		int h=Integer.parseInt(br.readLine());
+		System.out.println("Please enter the minute");
+		int mm=Integer.parseInt(br.readLine());
+		System.out.println("Please enter the second");
+		int s=Integer.parseInt(br.readLine());
+		objTurn.setNewDate(y, m, d, h, mm, s);
+		
+	}
+	public void addTurnType() throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Please enter the name of the new type of turn");
+		String name=br.readLine();
+		System.out.println("Enter the duration that takes the turn");
+		double time=Double.parseDouble(br.readLine());
+		objTurn.addTurnType(name, time);
 	}
 	public void attendTurn() {
 		Scanner teclado = new Scanner(System.in);
